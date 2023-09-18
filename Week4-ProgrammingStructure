@@ -1,0 +1,30 @@
+freq <- c(0.6,0.3,0.4,0.4,0.2,0.6,0.3,0.4,0.9,0.2)
+bp <- c(103,87,32,42,59,109,78,205,135,176)
+first <- c(1,1,1,1,0,0,0,0,NA,1)
+second <- c(0,0,1,1,0,0,1,1,1,1)
+final <- c(0,1,0,1,0,1,0,1,1,1)
+
+observations <- data.frame(freq,bp,first,second, final)
+observations
+
+
+boxplot(observations$bp ~ observations$first, col = "red", 
+        names = c("Low", "High"), 
+        main = "Patient Blood Pressure by Need of Immediate Care", 
+        ylab = "Patient Blood Pressure (BP)", xlab = "Need Immediate Care")
+boxplot(observations$bp ~ observations$second, col = "blue", 
+        names = c("Low", "High"), 
+        main = "Patient Blood Pressure by Need of Immediate Care", 
+        ylab = "Patient Blood Pressure (BP)", xlab = "Need Immediate Care")
+boxplot(observations$bp ~ observations$final, col = "purple", 
+        names = c("Low", "High"), 
+        main = "Patient Blood Pressure by Need of Immediate Care", 
+        ylab = "Patient Blood Pressure (BP)", xlab = "Need Immediate Care")
+
+lapply(observations, mean, na.rm = T)
+
+
+obs2 <- observations[observations$final == observations$second,]
+hist(obs2$bp)
+obs1 <- observations[observations$final == observations$first,]
+hist(obs1$bp) 
