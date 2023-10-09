@@ -1,0 +1,72 @@
+install.packages("pryr")
+library(pryr)
+
+# create S3
+# create a list with required components
+employee1 <- list(name = "Kiara", age = 24, experience = 4, role = "Project Architect")
+employee2 <- list (name = "John", age = 56, experience = 10, role = "Project Developer")
+
+# form class 
+class(employee1) <- "Employee_Info"
+class(employee2) <- "Employee_Info2"
+# call the object employee
+employee1
+employee2
+# General function print can be assigned to employee 1 and 2 objects
+print(employee1)
+# Some general functions do not work like mean(employee1)
+
+# create own method for hiring
+hired <- function(x){
+  cat(x$name, "\n")  # print function
+  cat(x$age, "years old\n")
+  cat("Experience:", x$experience, "\n")
+  cat("Role:", x$role, "\n\n")
+  
+  if(x$age > 20 & x$age < 30 & x$experience > 2){ # customized function for hiring letter
+    cat("Dear", x$name, ",\n")
+    cat("We are pleased to offer you a position as a",x$role, "!")
+  } else {
+    cat("Dear", x$name, ",\n")
+    cat("We regret to inform you that you have not been selected as a", x$role, "this selection cycle.")
+  }
+    
+  }
+
+hired(employee1)
+hired(employee2)
+
+# Check type of object is S3
+otype(employee1)
+otype(employee2)
+
+###################################################################################################
+# create S4
+setClass("Employee_Info", slots=list(name="character", age="numeric", experience = "numeric", role="character"))
+# create an object of class 
+employee1 <- new("Employee_Info", name = "Kiara", age = 24, experience = 4, role = "Project Architect")
+employee2 <- new("Employee_Info", name = "John", age = 56, experience = 10, role = "Project Developer")
+# create method
+setMethod("show", "Employee_Info",
+          function(object) {
+            cat(object@name, "\n")
+            cat(object@age, "years old\n")
+            cat("Experience:", object@experience, "\n")
+            cat("Role:", object@role, "\n\n")
+            if(object@age > 20 & object@age < 30 & object@experience > 2){
+                cat("Dear", object@name, ",\n")
+                cat("We are pleased to offer you a position as a",object@role, "!")
+              } else {
+                cat("Dear", object@name, ",\n")
+                cat("We regret to inform you that you have not been selected as a", object@role, "this selection cycle.")
+              }
+            }
+)
+
+# call objects
+employee1
+employee2          
+
+# Check object type is S4
+otype(employee1)
+otype(employee2)
