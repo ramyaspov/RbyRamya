@@ -1,0 +1,30 @@
+# Import dataset to R
+x = read.table("Assignment 6 Dataset.txt", header=TRUE,sep = ",")
+# Run plyer and generate mean
+install.packages("plyr")
+library(plyr)
+y = ddply(x, "Sex", transform, Grade.Average = mean(Grade))
+y
+
+# Print as file
+write.table(y, 'Sorted_Average', sep = ",")
+# Filter names that contain the letter i/I
+newx = subset(x, grepl("[iI]", x$Name))
+newx
+
+# Print as file
+write.table(newx, "DataSubset", sep = ",")
+# Understand age differences
+y[order(-y$Grade),]
+females = y[y$Sex == "Female",]
+males = y[y$Sex == "Male",]
+boxplot(males$Age, females$Age, names = c("Males", "Females"))
+title("Age Distribution for Males and Females")
+
+# Visualize grade distribution for each sex 
+boxplot(males$Grade, females$Grade, names = c("Males", "Females"))
+title("Grade Distribution for Males and Females")
+
+# Understand count of above average by sex
+count(females$Grade > females$Grade.Average)
+count(males$Grade > males$Grade.Average)
