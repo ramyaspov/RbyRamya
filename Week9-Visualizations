@@ -1,0 +1,28 @@
+# Load packages
+install.packages("lattice")
+install.packages("ggplot2")
+library(lattice)
+library(ggplot2)
+
+# Read CSV data
+data <- read.table("Backpack.csv", header=T, sep=",")
+# Filter for only undergraduates (four years)
+data <- data[data$Status == "U",]
+data <- data[data$Year <= 4,]
+
+# Check str of data: need to change year and sex to factors
+str(data)
+data$Sex <- as.factor(data$Sex)
+data$Year <- as.factor(data$Year)
+
+# Basic box plot - look at either year or gender
+boxplot(data$BackpackWeight ~ data$Year, main = "Backpack weight for Undergraduates by Year", xlab = "Year", ylab = "Backpack Weight", col = rainbow(4))
+boxplot(data$BackpackWeight ~ data$Sex, main = "Backpack weight for Undergraduates by Gender", xlab = "Gender", ylab = "Backpack Weight", col = c("pink", "blue"))
+
+# Lattice boxplot - understand gender differences by years 
+bwplot(data$BackpackWeight ~ data$Sex | data$Year, data = data, horizontal = FALSE, main = "Backpack weight for Undergraduates by Gender", xlab = "Gender", ylab = "Backpack Weight", col = c("pink", "blue"))
+
+# ggplot2 - understand gender differences by years with clear visualization
+ggplot(data, aes(x= Sex, y = BackpackWeight, fill = Sex)) +
+  geom_boxplot() + facet_wrap(~Year) + labs(title = "Gender differences in Backpack Weight for Undergraduates by Year", x = "Sex",  y = "Backpack Weight (lbs)") +
+  theme(plot.title = element_text(size="14", face = "bold"))
