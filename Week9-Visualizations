@@ -20,7 +20,7 @@ boxplot(data$BackpackWeight ~ data$Year, main = "Backpack weight for Undergradua
 boxplot(data$BackpackWeight ~ data$Sex, main = "Backpack weight for Undergraduates by Gender", xlab = "Gender", ylab = "Backpack Weight", col = c("pink", "blue"))
 
 # Lattice boxplot - understand gender differences by years 
-bwplot(data$BackpackWeight ~ data$Sex | data$Year, data = data, horizontal = FALSE, main = "Backpack weight for Undergraduates by Gender", xlab = "Gender", ylab = "Backpack Weight", col = c("pink", "blue"))
+bwplot(data$BackpackWeight ~ data$Sex | data$Year, data = data, horizontal = FALSE, main = "Gender differences in Backpack Weight for Undergraduates by Year", xlab = "Gender", ylab = "Backpack Weight", col = c("pink", "blue"))
 
 # ggplot2 - understand gender differences by years with clear visualization
 ggplot(data, aes(x= Sex, y = BackpackWeight, fill = Sex)) +
