@@ -1,0 +1,12 @@
+Package: hireLetter
+Type: Package
+Title: General Customizable Accpetance or Rejection Letter Templates
+Version: 0.0.0.9000
+Author@R: "Ramya Subramanian <rsubramanian23@usf.edu> [aut,cre]"
+Description: This package holds functions for individuals on a hiring committee to send
+    acceptance or rejection letters based on qualifications they set. The default qualifications
+    available in the hire function are age, GPA, and work experience. The letter template is 
+    created using a S4 class.
+Depends: R (>= 3.1.2)
+License: CC0
+LazyData: true
