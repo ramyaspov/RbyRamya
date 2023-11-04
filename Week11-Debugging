@@ -1,0 +1,32 @@
+tukey_multiple <- function(x) {
+  outliers <- array(TRUE,dim=dim(x))
+  for (j in 1:ncol(x))
+  {
+    outliers[,j] <- outliers[,j] && tukey.outlier(x[,j])
+  }
+  outlier.vec <- vector(length=nrow(x))
+  for (i in 1:nrow(x))
+  { outlier.vec[i] <- all(outliers[i,]) } 
+  # Move return to a separate line
+  return(outlier.vec) }
+
+# Utilize debug function on mycars dataset
+mycars <- mtcars
+debug(tukey_multiple(mycars))
+
+# Create one row data frame
+firstCar <- mtcars[1,]
+debug(tukey_multiple(firstCar))
+
+# Comment out tukey_outlier() and test mycars
+tukey_multiple <- function(x) {
+  outliers <- array(TRUE,dim=dim(x))
+  for (j in 1:ncol(x))
+  {
+    outliers[,j] <- outliers[,j] #&& tukey.outlier(x[,j])
+  }
+  outlier.vec <- vector(length=nrow(x))
+  for (i in 1:nrow(x))
+  { outlier.vec[i] <- all(outliers[i,]) } 
+  return(outlier.vec) }
+tukey_multiple(mycars)
