@@ -1,0 +1,87 @@
+---
+title: "Week12-RMarkdown"
+author: "Ramya Subramanian"
+date: "2023-11-06"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(shiny)
+library(dplyr)
+```
+
+# Creating a Shiny App for my hireLetter package
+## Step 1: Create the UI
+The options the hiring individual can modify are age, experience, and role by setting a minimum required for them. The main panel of the shiny app will display the pass and failed applicant tables and is expected to show the letter templates soon.
+
+```{r ui}
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput(inputId = "age",
+              label = "Minimum Age:",
+              min = 1, max = 100, 
+              value = 20),
+      sliderInput(inputId = "experience",
+              label = "Minimum Experience:",
+              min = 1, max = 100,
+              value = 2),
+      selectInput(inputId = "role",
+              label = "Applying Position:",
+              choices = c("Civil Engineer", "Project Manager", "Professor", "Chef"),
+              selected = "Project Manager")),
+  mainPanel(
+    div("Candidates that Passed"),
+    tableOutput("Pass"),
+    div("Candidates that Failed"),
+    tableOutput("Fail"),
+    textOutput("AcceptL"),
+    textOutput("RejectedL")
+    
+  )
+  
+)
+)
+
+```
+
+## Develop the server code
+The output table is the first part of this shiny function that works. The integration of the output table to create the output letter is still a work in progress. I still need to find a way to reference these tables in a for loop to create and display the letters possibly in a new tab.
+
+```{r shinyfunction}
+server <- function(input, output) {
+  output$Pass <- renderTable({
+    datafilter <- data %>% filter(age >= input$age & experience >= input$experience & role == input$role)
+    })
+    
+  output$Fail <- renderTable({
+    datafilter <- data %>% filter(age < input$age | experience < input$experience | role != input$role)
+})
+# Need to find a way to reference output$Pass table in order to make letter template
+    output$AcceptL <- renderText({
+    for(j in output$pass){
+    paste("Dear", data$name, ",\n")
+    paste("We are pleased to offer you a posiiton as a", data$role, "!")
+    }
+  
+  })
+} 
+
+# Repeat for rejected applicants
+
+# Sample Data to input
+name <- c("Josephine", "Carl", "John")
+age <- c(23,45,78)
+experience <- c(1,5,6)
+role <- c("Project Manager", "Civil Engineer", "Chef")
+data <- data.frame(name, age, experience, role)
+
+```
+
+# Print the shiny app for user 
+```{r print}
+# Need to make shiny app into function usuable in package hireLetter
+shinyApp(ui=ui, server = server)
+```
